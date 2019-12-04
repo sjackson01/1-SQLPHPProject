@@ -14,11 +14,12 @@ $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 try {
 //Specify a title and category query from media
    $results = $db->query("SELECT title, category FROM Media");
-   echo "Retrieved Results";
 } catch (Exception $e) {
     echo "Unable to retrieve results";
     exit;
 }
+
+var_dump($results->fetchALL());
 
 
 ?>
