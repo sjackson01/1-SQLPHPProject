@@ -11,6 +11,7 @@ function full_catalog_array(){
         
         //Store results statement object array in $catalog array
         $catalog = $results->fetchALL();
+        return $catalog;
 }
 
 function get_item_html($id,$item) {
