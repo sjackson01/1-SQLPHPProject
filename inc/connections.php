@@ -5,11 +5,9 @@ try {
 $db = new PDO("sqlite:".__DIR__."/database.db");
 //Always throw an exception
 $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-echo "Connected to the database";
-exit;
 }catch(Exception $e){
     echo "Unable to connect";
-    echo $e->getMessage();
+    //echo $e->getMessage();
     exit;
 }
 

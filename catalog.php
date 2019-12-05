@@ -1,6 +1,6 @@
 <?php 
-include("inc/data.php");
 include("inc/functions.php");
+$catalog = full_catalog_array();
 
 $pageTitle = "Full Catalog";
 $section = null;

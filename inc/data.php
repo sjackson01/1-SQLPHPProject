@@ -1,5 +1,8 @@
 <?php
-$catalog = [];
+//Include database connection and $catalog array generated from that connection
+include("connections.php");
+
+/* $catalog = [];
 //Books
 $catalog[101] = [
 	"title" => "A Design Patterns: Elements of Reusable Object-Oriented Software",
@@ -184,3 +187,5 @@ $catalog[304] = [
     "category" => "Music",
     "artist" => "Nat King Cole"
 ];
+
+*/
