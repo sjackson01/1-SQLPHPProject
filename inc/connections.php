@@ -19,7 +19,8 @@ try {
     exit;
 }
 
-var_dump($results->fetchALL(PDO::FETCH_ASSOC));
+//Store results statement object array in $catalog array
+$catalog = $results->fetchALL();
 
 
 ?>
