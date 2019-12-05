@@ -1,6 +1,7 @@
 <?php 
-include("inc/data.php");
 include("inc/functions.php");
+//Call full catalog array function
+$catalog = full_catalog_array();
 
 $pageTitle = "Personal Media Library";
 $section = null;
