@@ -11,16 +11,4 @@ $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     exit;
 }
 
-try {
-//Specify a title and category query from media
-   $results = $db->query("SELECT title, category, img FROM Media");
-} catch (Exception $e) {
-    echo "Unable to retrieve results";
-    exit;
-}
-
-//Store results statement object array in $catalog array
-$catalog = $results->fetchALL();
-
-
 ?>
