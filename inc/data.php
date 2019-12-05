@@ -1,4 +1,5 @@
 <?php
+//Include database connection and $catalog array generated from that connection
 include("connections.php");
 
 /* $catalog = [];
