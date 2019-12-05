@@ -1,17 +1,4 @@
 <?php
-function full_catalog_array(){
-    include("connections.php");
-    try {
-        //Specify a title and category query from media
-           $results = $db->query("SELECT title, category, img FROM Media");
-        } catch (Exception $e) {
-            echo "Unable to retrieve results";
-            exit;
-        }
-        
-        //Store results statement object array in $catalog array
-        $catalog = $results->fetchALL();
-}
 function get_item_html($id,$item) {
     $output = "<li><a href='details.php?id="
         . $id . "'><img src='" 
