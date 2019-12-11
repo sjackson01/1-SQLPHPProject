@@ -14,32 +14,6 @@ function full_catalog_array(){
         return $catalog;
 }
 
-//Pass $id argument to select media id and attributes
-function single_item_array($id){
-    include("connections.php");
-    try {
-           $results = $db->query(
-               "SELECT Media.media_id, title, category, img, 
-               format, year, genre, publisher, isbn 
-               FROM Media
-               JOIN Genres ON Media.genre_id = Genres.genre_id
-               LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
-               WHERE Media.media_id = $id"
-           );
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            echo "Unable to retrieve results";
-            exit;
-        }
-        
-        
-        //Use fetch since we are only returing a single item array
-        $catalog = $results->fetch();
-        return $catalog;
-}
-//Test sing item array function to fetch item id one an all the selected attributes
-var_dump(single_item_array(1));
-
 function get_item_html($id,$item) {
     $output = "<li><a href='details.php?id="
         . $id . "'><img src='" 
