@@ -8,7 +8,6 @@ if (isset($_GET["id"])) {
     $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
     //Pass function $id from query string received from the database
     $item = single_item_array($id);
-    var_dump($item);
 }
 
 if (!isset($item)) {
