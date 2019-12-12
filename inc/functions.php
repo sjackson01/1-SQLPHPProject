@@ -60,6 +60,16 @@ function single_item_array($id){
             echo "Unable to retrieve results";
             exit;
         }
+        //Fetch every row one at a time by using a while loop
+        //The first itteration will add the first person and rol
+        //To the variable $row
+        //If fetch returns an empty value or reaches the end
+        //$row will be set to false ending the loop 
+        while($row = $results->fetch(PDO::FETCH_ASSOC)) {
+            /* Add interal array to the item array variable */ 
+            /* People will be assigned to arrays based on their role */ 
+            $item[$row["role"]][] = $row["fullname"]; 
+        }
         //Change $catalog to item since we are only returning one item
         return $item;
 }
