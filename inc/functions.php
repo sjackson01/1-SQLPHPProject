@@ -44,9 +44,22 @@ function single_item_array($id){
         //Call fetch method to retrieve item information for the 
         //One product that matches the ID
         $item = $results->fetch();
-        //Return that item back to the function call
-        //Early return we can have multiple returns in a function
         if(empty($item)) return $item;
+
+        try {
+           $results = $db->prepare(
+               "SELECT fullname, role
+               FROM Media_People
+               JOIN People ON Media_People.people_id = People.people_id
+               WHERE Media_People.people_id = ?"
+           );
+           $results->bindParam(1,$id,PDO::PARAM_INT);
+           $results->execute();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            echo "Unable to retrieve results";
+            exit;
+        }
         //Change $catalog to item since we are only returning one item
         return $item;
 }
