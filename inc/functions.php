@@ -51,7 +51,7 @@ function single_item_array($id){
                "SELECT fullname, role
                FROM Media_People
                JOIN People ON Media_People.people_id = People.people_id
-               WHERE Media_People.people_id = ?"
+               WHERE Media_People.media_id = ?"
            );
            $results->bindParam(1,$id,PDO::PARAM_INT);
            $results->execute();
