@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     $item = single_item_array($id);
 }
 
-if (!isset($item)) {
+if (empty($item)) {
     header("location:catalog.php");
     exit;
 }
