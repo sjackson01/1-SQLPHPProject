@@ -18,23 +18,33 @@ function full_catalog_array(){
 function single_item_array($id){
     include("connections.php");
     try {
-           $results = $db->query(
+            //Similar to query only it doesn't run the query right away
+            //Creating a prepared statement 
+           $results = $db->prepare(
                "SELECT Media.media_id, title, category, img, 
                format, year, genre, publisher, isbn 
                FROM Media
                JOIN Genres ON Media.genre_id = Genres.genre_id
                LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
-               WHERE Media.media_id = $id"
+               /* repalce id argument with un-named place holder ? */ 
+               WHERE Media.media_id = ?"
            );
+           //Call method on the $result PDO object to run the query
+           //1 is the first place holder (?)
+           //$id is the variable we would like to replace (?)
+           //PDO:: PARAM_INT is the statit method to turn all input into an int 
+           $results->bindParam(1,$id,PDO::PARAM_INT);
+           //Execute the pepared statement
+           $results->execute();
         } catch (Exception $e) {
             echo $e->getMessage();
             echo "Unable to retrieve results";
             exit;
         }
-        
-        
-        //Use fetch since we are only returing a single item array
+        //Call fetch method to retrieve item information for the 
+        //One product that matches the ID
         $catalog = $results->fetch();
+        //Return that item back to the function call
         return $catalog;
 }
 
