@@ -3,7 +3,7 @@ function full_catalog_array(){
     include("connections.php");
     try {
         //Specify a title and category query from media
-           $results = $db->query("SELECT title, category, img FROM Media");
+           $results = $db->query("SELECT media_id, title, category, img FROM Media");
         } catch (Exception $e) {
             echo "Unable to retrieve results";
             exit;
@@ -37,12 +37,11 @@ function single_item_array($id){
         $catalog = $results->fetch();
         return $catalog;
 }
-//Test sing item array function to fetch item id one an all the selected attributes
-var_dump(single_item_array(1));
 
 function get_item_html($id,$item) {
     $output = "<li><a href='details.php?id="
-        . $id . "'><img src='" 
+        /* Instead of $id we use the $item["media_id"]*/
+        . $item["media_id"] . "'><img src='" 
         . $item["img"] . "' alt='" 
         . $item["title"] . "' />" 
         . "<p>View Details</p>"
