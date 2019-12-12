@@ -43,9 +43,12 @@ function single_item_array($id){
         }
         //Call fetch method to retrieve item information for the 
         //One product that matches the ID
-        $catalog = $results->fetch();
+        $item = $results->fetch();
         //Return that item back to the function call
-        return $catalog;
+        //Early return we can have multiple returns in a function
+        if(empty($item)) return $item;
+        //Change $catalog to item since we are only returning one item
+        return $item;
 }
 
 function get_item_html($id,$item) {
