@@ -1,6 +1,6 @@
 <?php 
 include("inc/functions.php");
-$catalog = full_catalog_array();
+
 
 $pageTitle = "Full Catalog";
 $section = null;
@@ -17,6 +17,8 @@ if (isset($_GET["cat"])) {
         $section = "music";
     }
 }
+//If no category is specified call the full catalog
+$catalog = full_catalog_array();
 
 include("inc/header.php"); ?>
 
