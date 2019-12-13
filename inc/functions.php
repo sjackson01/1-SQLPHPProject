@@ -30,8 +30,8 @@ function random_catalog_array(){
         }
         
         //Store results statement object array in $catalog array
-        $catalog = $results->fetchALL();
-        return $catalog;
+        $item = $results->fetchALL();
+        return $item;
 }
 
 //Pass $id argument to select media id and attributes
@@ -94,7 +94,7 @@ function single_item_array($id){
         return $item;
 }
 
-function get_item_html($id,$item) {
+function get_item_html($item) {
     $output = "<li><a href='details.php?id="
         /* Instead of $id we use the $item["media_id"]*/
         . $item["media_id"] . "'><img src='" 
