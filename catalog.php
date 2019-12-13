@@ -17,8 +17,13 @@ if (isset($_GET["cat"])) {
         $section = "music";
     }
 }
-//If no category is specified call the full catalog
-$catalog = full_catalog_array();
+if(empty($section)){
+    //If no category is specified call the full catalog array
+    $catalog = full_catalog_array();
+} else {
+   //If the category = $section is not empty call category array
+   $catalog = category_catalog_array($section); 
+}
 
 include("inc/header.php"); ?>
 
