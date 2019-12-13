@@ -13,11 +13,33 @@ function full_catalog_array(){
         $catalog = $results->fetchALL();
         return $catalog;
 }
+//Takes category as argument
+function category_catalog_array($category){
+    include("connections.php");
+    //Insure that category passed and matched is lowercase
+    $category =strtolower($category);
+    try {
+           $results = $db->prepare("
+           SELECT media_id, title, category, img 
+           FROM Media 
+           WHERE LOWER(category) - ?"
+        );
+        //Bind and specify the data type
+        $results->bindParam(1,$category,PDO::PARAM_STR);
+        $results->execute();
+        } catch (Exception $e) {
+            echo "Unable to retrieve results";
+            exit;
+        }
+        
+        //Store results statement object array in $catalog array
+        $catalog = $results->fetchALL();
+        return $catalog;
+}
 
 function random_catalog_array(){
     include("connections.php");
     try {
-        //Specify a title and category query from media
            $results = $db->query(
                "SELECT media_id, title, category, img 
                 FROM Media
