@@ -1,6 +1,6 @@
 <?php 
 include("inc/functions.php");
-$catalog = full_catalog_array();
+
 
 $pageTitle = "Full Catalog";
 $section = null;
@@ -18,6 +18,15 @@ if (isset($_GET["cat"])) {
     }
 }
 
+//Category conditional
+if(empty($section)){
+    //If no category is specified call the full catalog array
+    $catalog = full_catalog_array();
+} else {
+   //If the category = $section is not empty call category array
+   $catalog = category_catalog_array($section); 
+}
+
 include("inc/header.php"); ?>
 
 <div class="section catalog page">
@@ -32,9 +41,9 @@ include("inc/header.php"); ?>
         
         <ul class="items">
             <?php
-            $categories = array_category($catalog,$section);
-            foreach ($categories as $id) {
-                echo get_item_html($id,$catalog[$id]);
+            //For each dynamically generates html for catalog and categories
+            foreach ($catalog as $item) {
+                echo get_item_html($item);
             }
             ?>
         </ul>
