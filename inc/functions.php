@@ -3,7 +3,20 @@ function full_catalog_array(){
     include("connections.php");
     try {
         //Specify a title and category query from media
-           $results = $db->query("SELECT media_id, title, category, img FROM Media");
+           $results = $db->query("
+           SELECT media_id, title, category, img 
+           FROM Media
+           ORDER BY
+           REPLACE(
+               REPLACE(
+                 REPLACE(title, 'The ', ''),
+                    'An ', 
+                    ''
+                    ),
+                 'A ',
+                 ''
+                 )"
+            );
         } catch (Exception $e) {
             echo "Unable to retrieve results";
             exit;
