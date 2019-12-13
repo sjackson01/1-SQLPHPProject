@@ -33,6 +33,17 @@ if(empty($current_page)){
 
 //Count total items in the $section array 
 $total_items = get_catalog_count($section);
+//Total number of pages divided by the items per page
+//Return the next highest integer value rounding up value if necessary
+//Using the ceil function
+$total_page = ceil($total_items / $items_per_page);
+
+//Determine the offset which is the number of items to skip
+//For the current page for example on page 3 with 8 items per page
+//The offset would be 16
+$offset = ($current_page) - 1 * $items_per_page; 
+
+
 
 //Category conditional
 if(empty($section)){
