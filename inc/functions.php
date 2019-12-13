@@ -14,6 +14,26 @@ function full_catalog_array(){
         return $catalog;
 }
 
+function random_catalog_array(){
+    include("connections.php");
+    try {
+        //Specify a title and category query from media
+           $results = $db->query(
+               "SELECT media_id, title, category, img 
+                FROM Media
+                ORDER BY RANDOM()
+                LIMIT 4"
+               );
+        } catch (Exception $e) {
+            echo "Unable to retrieve results";
+            exit;
+        }
+        
+        //Store results statement object array in $catalog array
+        $catalog = $results->fetchALL();
+        return $catalog;
+}
+
 //Pass $id argument to select media id and attributes
 function single_item_array($id){
     include("connections.php");
