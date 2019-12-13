@@ -17,12 +17,12 @@ function full_catalog_array(){
 function category_catalog_array($category){
     include("connections.php");
     //Insure that category passed and matched is lowercase
-    $category =strtolower($category);
+    $category = strtolower($category);
     try {
-           $results = $db->prepare("
-           SELECT media_id, title, category, img 
+           $results = $db->prepare(
+          "SELECT media_id, title, category, img 
            FROM Media 
-           WHERE LOWER(category) - ?"
+           WHERE LOWER(category) = ?"
         );
         //Bind and specify the data type
         $results->bindParam(1,$category,PDO::PARAM_STR);
@@ -33,8 +33,8 @@ function category_catalog_array($category){
         }
         
         //Store results statement object array in $catalog array
-        $catalog = $results->fetchALL();
-        return $catalog;
+        $item = $results->fetchALL();
+        return $item;
 }
 
 function random_catalog_array(){

@@ -39,9 +39,9 @@ include("inc/header.php"); ?>
         
         <ul class="items">
             <?php
-            $categories = array_category($catalog,$section);
-            foreach ($categories as $id) {
-                echo get_item_html($catalog[$id]);
+            //For each dynamically generates html for catalog and categories
+            foreach ($catalog as $item) {
+                echo get_item_html($item);
             }
             ?>
         </ul>
