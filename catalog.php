@@ -36,8 +36,34 @@ $total_items = get_catalog_count($section);
 //Total number of pages divided by the items per page
 //Return the next highest integer value rounding up value if necessary
 //Using the ceil function
-$total_page = ceil($total_items / $items_per_page);
+$total_pages = ceil($total_items / $items_per_page);
+//Limit results in redirect
+//By default we don't want to limit results so we initalize 
+//Using and empty string
+$limit_results = "";
+//Add conditional to see if we are on a category page
+if(!empty($section)){
+    //If user chooses category we want to redirect them
+    //Redirect them to that category page
+    //& allows us to pass page number as well
+    $limit_results = "cat=" . $section ."&";
+}
 
+//Rediret too-large page numbers to the last page
+if($current_page > $total_pages){
+    header("location:catalog.php?"
+    //Category limit results
+    . $limit_results 
+    ."pg=" . $total_pages);
+}
+//Redirect too-small page numbers to the first page
+if($current_page < $total_pages){
+    header("location:catalog.php?" 
+        //Category limit results
+        . $limit_results 
+        . "ph=1" . $total_pages
+    );
+}
 //Determine the offset which is the number of items to skip
 //For the current page for example on page 3 with 8 items per page
 //The offset would be 16
