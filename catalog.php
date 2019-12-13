@@ -31,6 +31,9 @@ if(empty($current_page)){
     $current_page = 1;
 }
 
+//Count total items in the $section array 
+$total_items = get_catalog_count($section);
+
 //Category conditional
 if(empty($section)){
     //If no category is specified call the full catalog array
