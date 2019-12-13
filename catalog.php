@@ -17,6 +17,8 @@ if (isset($_GET["cat"])) {
         $section = "music";
     }
 }
+
+//Category conditional
 if(empty($section)){
     //If no category is specified call the full catalog array
     $catalog = full_catalog_array();

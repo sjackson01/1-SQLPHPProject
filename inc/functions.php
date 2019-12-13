@@ -22,7 +22,18 @@ function category_catalog_array($category){
            $results = $db->prepare(
           "SELECT media_id, title, category, img 
            FROM Media 
-           WHERE LOWER(category) = ?"
+           WHERE LOWER(category) = ?
+           /*Order by title and replace The with empty string */
+           ORDER BY
+           REPLACE(
+               REPLACE(
+                 REPLACE(title, 'The ', ''),
+                    'An ', 
+                    ''
+                    ),
+                 'A ',
+                 ''
+                 )"
         );
         //Bind and specify the data type
         $results->bindParam(1,$category,PDO::PARAM_STR);
