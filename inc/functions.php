@@ -36,12 +36,13 @@ function full_catalog_array($limit = null, $offset = 0 ){
     include("connections.php");
     try {
         //Add query to SQL variable
-        $sql = "SELECT media_id, title, category, img 
+        $sql = 
+          "SELECT media_id, title, category, img 
            FROM Media
            ORDER BY
            REPLACE(
                REPLACE(
-                 REPLACE(title, 'The ', ''),
+                 REPLACE(title,'The ',''),
                     'An ', 
                     ''
                     ),
@@ -54,7 +55,7 @@ function full_catalog_array($limit = null, $offset = 0 ){
             //Add limit with placeholders   
             //Limit = how many items we want to return
             //Offset = where we want to start
-            $results = $db->prepare($sql . "LIMIT ? OFFSET ?");
+            $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
             //Bind param and filter for integer
             $results-> bindParam(1, $limit, PDO::PARAM_INT);
             $results-> bindParam(2, $offset, PDO::PATAM_INT);
@@ -83,7 +84,8 @@ function category_catalog_array($category, $limit = null, $offset = 0){
     $category = strtolower($category);
     try {
         //Add SQL statement to $sql
-        $sql =  "SELECT media_id, title, category, img 
+        $sql =  
+          "SELECT media_id, title, category, img 
            FROM Media 
            WHERE LOWER(category) = ?
            /*Order by title and replace The with empty string */
@@ -99,12 +101,12 @@ function category_catalog_array($category, $limit = null, $offset = 0){
                  )";
        if(is_integer($limit)){          
             //Pass $sql and concatinate limit and offset then prepare        
-            $results = $db->prepare($sql . "LIMIT ? OFFSET ?");
+            $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
             //Bind and specify the data type
             $results->bindParam(1,$category,PDO::PARAM_STR);
             $results->bindParam(2,$limit,PDO::PARAM_INT);
             $results->bindParam(3,$offset,PDO::PARAM_INT);
-       }else {
+       }else{
             $results = $db->prepare($sql);
             $results->bindParam(1,$category,PDO::PARAM_STR);
         }

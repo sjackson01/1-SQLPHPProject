@@ -4,8 +4,8 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
-//Set items to page to 8
-$item_per_page = 8;
+
+
 
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
@@ -19,6 +19,7 @@ if (isset($_GET["cat"])) {
         $section = "music";
     }
 }
+
 
 //If is set get page
 if(isset($_GET["pg"])){
@@ -34,10 +35,12 @@ if(empty($current_page)){
 //Count total items in the $section array 
 $total_items = get_catalog_count($section);
 
+//Set default items per page to avoid divide by zero error 
+$items_per_page = 8;
+
 //Total number of pages divided by the items per page
 //Return the next highest integer value rounding up value if necessary
 //Using the ceil function
-
 $total_pages = ceil($total_items / $items_per_page);
 //Limit results in redirect
 //By default we don't want to limit results so we initalize 
@@ -49,7 +52,7 @@ if(!empty($section)){
     //If user chooses category we want to redirect them
     //Redirect them to that category page
     //& allows us to pass page number as well
-    $limit_results = "cat=" . $section ."&";
+    $limit_results = "cat=" . $section . "&";
 }
 
 //Rediret too-large page numbers to the last page
