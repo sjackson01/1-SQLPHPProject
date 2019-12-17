@@ -77,7 +77,7 @@ $offset = ($current_page) - 1 * $items_per_page;
 
 
 //Category conditional
-//Set limits and offset 
+//Set limits and offset
 if(empty($section)){
     //If no category is specified call the full catalog array
     //Pass $items_per_page = LIMIT and $offset = OFFSET 

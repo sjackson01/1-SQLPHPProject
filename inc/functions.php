@@ -3,14 +3,14 @@
 //Allows passing a category as a argument to count the array
 //Passing no argument to count the full catalog
 function get_catalog_count($category = null){
-        $category = strlower($category);
+        $category = strtolower($category);
         include("connections.php");
         try{
             //Count all the items in the database
-            $spl = "SELECT COUNT(media_id) FROM Media";
+                $sql = "SELECT COUNT(media_id) FROM Media";
                 if(!empty($category)){
                 //Add results to a PDO statement object
-                $result = $db->prepare($sq 
+                $result = $db->prepare($sql 
                 . " WHERE LOWER(category) = ?"
             );
                 $result->bindParam(1,$category, PDO::PARAM_STR);
@@ -24,7 +24,7 @@ function get_catalog_count($category = null){
         }
         //Assign a single column to a count method with method Column
         // 0 indicates the first column 
-        $count = $result = $result->fetchColumn(0);
+        $count = $result->fetchColumn(0);
         //Return the count
         return $count;
 }
@@ -103,7 +103,7 @@ function category_catalog_array($category, $limit = null, $offset = 0){
             //Bind and specify the data type
             $results->bindParam(1,$category,PDO::PARAM_STR);
             $results->bindParam(2,$limit,PDO::PARAM_INT);
-            $result->bindParam(3, $offset,PDO::PARAM_INT);
+            $results->bindParam(3,$offset,PDO::PARAM_INT);
        }else {
             $results = $db->prepare($sql);
             $results->bindParam(1,$category,PDO::PARAM_STR);
