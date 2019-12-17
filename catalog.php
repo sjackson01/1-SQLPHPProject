@@ -77,12 +77,14 @@ $offset = ($current_page) - 1 * $items_per_page;
 
 
 //Category conditional
+//Set limits and offset 
 if(empty($section)){
     //If no category is specified call the full catalog array
-    $catalog = full_catalog_array();
+    //Pass $items_per_page = LIMIT and $offset = OFFSET 
+    $catalog = full_catalog_array($items_per_page,$offset);
 } else {
    //If the category = $section is not empty call category array
-   $catalog = category_catalog_array($section); 
+   $catalog = category_catalog_array($section,$item_per_page,$offset); 
 }
 
 include("inc/header.php"); ?>
