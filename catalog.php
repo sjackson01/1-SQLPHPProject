@@ -6,7 +6,6 @@ $pageTitle = "Full Catalog";
 $section = null;
 
 
-
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
         $pageTitle = "Books";
@@ -20,23 +19,16 @@ if (isset($_GET["cat"])) {
     }
 }
 
-
-//If is set get page
-if(isset($_GET["pg"])){
-    //Filter and sanitize current page sent through $_GET
-    $current_page = filter_input(INPUT_GET,"pg",FILTER_SANITIZE_NUMBER_INT);
-}
-
-//If current page is not set, set to one
-if(empty($current_page)){
-    $current_page = 1;
-}
-
-//Count total items in the $section array 
-$total_items = get_catalog_count($section);
-
-//Set default items per page to avoid divide by zero error 
 $items_per_page = 8;
+
+if (isset($_GET["pg"])) {
+  $current_page = filter_input(INPUT_GET,"pg",FILTER_SANITIZE_NUMBER_INT);
+}
+if (empty($current_page)) {
+  $current_page = 1;
+}
+
+$total_items = get_catalog_count($section);
 
 //Total number of pages divided by the items per page
 //Return the next highest integer value rounding up value if necessary
@@ -64,7 +56,7 @@ if($current_page > $total_pages){
 }
 
 //Redirect too-small page numbers to the first page
-if($current_page < $total_pages){
+if($current_page < 1){
     header("location:catalog.php?" 
         //Category limit results
         . $limit_results 
