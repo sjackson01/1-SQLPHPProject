@@ -48,8 +48,8 @@ function full_catalog_array($limit = null, $offset = 0 ){
                  'A ',
                  ''
                  )";
-            //Use conditional to add limit
-            if (is_integer($limit)){     
+        //Use conditional to add limit
+        if (is_integer($limit)){     
             //Prepare the SQL query 
             //Add limit with placeholders   
             //Limit = how many items we want to return
@@ -58,10 +58,10 @@ function full_catalog_array($limit = null, $offset = 0 ){
             //Bind param and filter for integer
             $results-> bindParam(1, $limit, PDO::PARAM_INT);
             $results-> bindParam(2, $offset, PDO::PATAM_INT);
-            } else {
+        } else {
             //Prepare the SQL query    
             $results = $db->prepare($sql);
-            }
+        }
             //Execute the SQL query
             $results-execute();
         } catch (Exception $e) {
