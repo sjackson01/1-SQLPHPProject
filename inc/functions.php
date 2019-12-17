@@ -58,7 +58,7 @@ function full_catalog_array($limit = null, $offset = 0 ){
             $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
             //Bind param and filter for integer
             $results-> bindParam(1, $limit, PDO::PARAM_INT);
-            $results-> bindParam(2, $offset, PDO::PATAM_INT);
+            $results-> bindParam(2, $offset, PDO::PARAM_INT);
         } else {
             //Prepare the SQL query    
             $results = $db->prepare($sql);
