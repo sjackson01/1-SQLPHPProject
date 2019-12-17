@@ -28,12 +28,15 @@ function get_catalog_count($category = null){
         //Return the count
         return $count;
 }
-function full_catalog_array(){
+
+//Set default parameters for $limit and null
+//This allows passing a limit without an offset 
+//Starting at the very first item by default
+function full_catalog_array($limit = null, $offset = 0 ){
     include("connections.php");
     try {
-        //Specify a title and category query from media
-           $results = $db->query("
-           SELECT media_id, title, category, img 
+        //Add query to SQL variable
+        $sql = "SELECT media_id, title, category, img 
            FROM Media
            ORDER BY
            REPLACE(
@@ -44,8 +47,23 @@ function full_catalog_array(){
                     ),
                  'A ',
                  ''
-                 )"
-            );
+                 )";
+            //Use conditional to add limit
+            if (is_integer($limit)){     
+            //Prepare the SQL query 
+            //Add limit with placeholders   
+            //Limit = how many items we want to return
+            //Offset = where we want to start
+            $results = $db->prepare($sql, "LIMIT ? OFFSET ?");
+            //Bind param and filter for integer
+            $results-> bindParam(1, $limit, PDO::PARAM_INT);
+            $results-> bindParam(2, $offset, PDO::PATAM_INT);
+            } else {
+            //Prepare the SQL query    
+            $results = $db->prepare($sql);
+            }
+            //Execute the SQL query
+            $results-execute();
         } catch (Exception $e) {
             echo "Unable to retrieve results";
             exit;
