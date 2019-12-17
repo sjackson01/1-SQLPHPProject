@@ -64,7 +64,7 @@ function full_catalog_array($limit = null, $offset = 0 ){
             $results = $db->prepare($sql);
         }
             //Execute the SQL query
-            $results-execute();
+            $results->execute();
         } catch (Exception $e) {
             echo "Unable to retrieve results";
             exit;
