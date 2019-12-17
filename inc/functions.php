@@ -54,7 +54,7 @@ function full_catalog_array($limit = null, $offset = 0 ){
             //Add limit with placeholders   
             //Limit = how many items we want to return
             //Offset = where we want to start
-            $results = $db->prepare($sql, "LIMIT ? OFFSET ?");
+            $results = $db->prepare($sql . "LIMIT ? OFFSET ?");
             //Bind param and filter for integer
             $results-> bindParam(1, $limit, PDO::PARAM_INT);
             $results-> bindParam(2, $offset, PDO::PATAM_INT);
@@ -73,14 +73,17 @@ function full_catalog_array($limit = null, $offset = 0 ){
         $catalog = $results->fetchALL();
         return $catalog;
 }
-//Takes category as argument
-function category_catalog_array($category){
+
+//Set default parameters for $limit and null
+//This allows passing a limit without an offset 
+//Starting at the very first item by default
+function category_catalog_array($category, $limit = null, $offset = 0){
     include("connections.php");
     //Insure that category passed and matched is lowercase
     $category = strtolower($category);
     try {
-           $results = $db->prepare(
-          "SELECT media_id, title, category, img 
+        //Add SQL statement to $sql
+        $sql =  "SELECT media_id, title, category, img 
            FROM Media 
            WHERE LOWER(category) = ?
            /*Order by title and replace The with empty string */
@@ -93,10 +96,18 @@ function category_catalog_array($category){
                     ),
                  'A ',
                  ''
-                 )"
-        );
-        //Bind and specify the data type
-        $results->bindParam(1,$category,PDO::PARAM_STR);
+                 )";
+       if(is_integer($limit)){          
+            //Pass $sql and concatinate limit and offset then prepare        
+            $results = $db->prepare($sql . "LIMIT ? OFFSET ?");
+            //Bind and specify the data type
+            $results->bindParam(1,$category,PDO::PARAM_STR);
+            $results->bindParam(2,$limit,PDO::PARAM_INT);
+            $result->bindParam(3, $offset,PDO::PARAM_INT);
+       }else {
+            $results = $db->prepare($sql);
+            $results->bindParam(1,$category,PDO::PARAM_STR);
+        }
         $results->execute();
         } catch (Exception $e) {
             echo "Unable to retrieve results";
