@@ -71,7 +71,7 @@ function full_catalog_array($limit = null, $offset = 0 ){
         }
         
         //Store results statement object array in $catalog array
-        $catalog = $results->fetchALL();
+        $catalog = $results->fetchALL(PDO::FETCH_ASSOC);
         return $catalog;
 }
 
