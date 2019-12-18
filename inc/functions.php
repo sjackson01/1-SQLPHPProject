@@ -117,8 +117,8 @@ function category_catalog_array($category, $limit = null, $offset = 0){
         }
         
         //Store results statement object array in $catalog array
-        $item = $results->fetchALL();
-        return $item;
+        $catalog = $results->fetchALL();
+        return $catalog;
 }
 
 function random_catalog_array(){

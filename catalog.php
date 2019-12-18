@@ -1,10 +1,9 @@
 <?php 
 include("inc/functions.php");
 
-
 $pageTitle = "Full Catalog";
 $section = null;
-
+$items_per_page = 8;
 
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
@@ -19,14 +18,10 @@ if (isset($_GET["cat"])) {
     }
 }
 
-$items_per_page = 8;
-
 if (isset($_GET["pg"])) {
   $current_page = filter_input(INPUT_GET,"pg",FILTER_SANITIZE_NUMBER_INT);
 }
-if (empty($current_page)) {
-  $current_page = 1;
-}
+
 
 $total_items = get_catalog_count($section);
 
@@ -47,6 +42,11 @@ if(!empty($section)){
     $limit_results = "cat=" . $section . "&";
 }
 
+$limit_results = "";
+if (!empty($section)) {
+  $limit_results = "cat=" . $section . "&";
+}
+
 //Rediret too-large page numbers to the last page
 if($current_page > $total_pages){
     header("location:catalog.php?"
@@ -60,8 +60,7 @@ if($current_page < 1){
     header("location:catalog.php?" 
         //Category limit results
         . $limit_results 
-        . "ph=1" . $total_pages
-    );
+        . "pg=1");
 }
 
 //Determine the offset which is the number of items to skip
@@ -77,7 +76,7 @@ if(empty($section)){
     $catalog = full_catalog_array($items_per_page,$offset);
 } else {
    //If the category = $section is not empty call category array
-   $catalog = category_catalog_array($section,$item_per_page,$offset); 
+   $catalog = category_catalog_array($section,$items_per_page,$offset); 
 }
 
 //Create a for loop that is less than the total number of pages
@@ -124,8 +123,8 @@ include("inc/header.php"); ?>
             }
             ?>
         </ul>
-            <!-- Create pagination links above UL -->
-            <?php echo $pagination ?>
+         <!-- Create pagination links above UL -->
+         <?php echo $pagination ?>
     </div>
 </div>
 
