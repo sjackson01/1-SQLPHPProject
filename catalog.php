@@ -67,8 +67,7 @@ if($current_page < 1){
 //Determine the offset which is the number of items to skip
 //For the current page for example on page 3 with 8 items per page
 //The offset would be 16
-$offset = ($current_page) - 1 * $items_per_page; 
-
+$offset = ($current_page - 1) * $items_per_page; 
 
 
 //Category conditional
@@ -88,12 +87,33 @@ include("inc/header.php"); ?>
     
     <div class="wrapper">
         
-        <h1><?php 
-        if ($section != null) {
-            echo "<a href='catalog.php'>Full Catalog</a> &gt; ";
-        }
-        echo $pageTitle; ?></h1>
+        <h1>
+            <?php 
+            if ($section != null) {
+                echo "<a href='catalog.php'>Full Catalog</a> &gt; ";
+            }
+            echo $pageTitle; ?>
+        </h1>
         
+        <!-- Create a for loop that is less than the total number of pages -->
+        <div class="pagination">
+        Pages:  
+            <?php
+                //Loop starts at page 1
+                //If $i is <= $total_pages continue loop
+                for($i = 1; $i <= $total_pages; $i++){
+                    if($i == $current_page){
+                        echo " <span> $i </span>";
+                    }else{
+                    echo " <a href='catalog.php?";
+                            if(!empty($section)) {
+                                echo "cat=" .$section. "&";
+                            }
+                            echo "pg=$i'>$i</a>";
+                    }
+                }
+            ?>
+        </div> 
         <ul class="items">
             <?php
             //For each dynamically generates html for catalog and categories
