@@ -69,7 +69,6 @@ if($current_page < 1){
 //The offset would be 16
 $offset = ($current_page - 1) * $items_per_page; 
 
-
 //Category conditional
 //Set limits and offset
 if(empty($section)){
@@ -101,6 +100,7 @@ for ($i = 1;$i <= $total_pages;$i++) {
     }
 }
 $pagination .= "</div>";
+
 include("inc/header.php"); ?>
 
 <div class="section catalog page">
@@ -124,8 +124,8 @@ include("inc/header.php"); ?>
             }
             ?>
         </ul>
-        <!-- Create pagination links above UL -->
-        <?php echo $pagination; ?>
+            <!-- Create pagination links above UL -->
+            <?php echo $pagination ?>
     </div>
 </div>
 
