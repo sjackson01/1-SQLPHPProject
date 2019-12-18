@@ -81,6 +81,26 @@ if(empty($section)){
    $catalog = category_catalog_array($section,$item_per_page,$offset); 
 }
 
+//Create a for loop that is less than the total number of pages
+//Store in pagination variable
+$pagination = "<div class=\"pagination\">";
+$pagination .= "Pages: ";
+//Loop starts at page 1
+//If $i is <= $total_pages continue loop
+for ($i = 1;$i <= $total_pages;$i++) {
+    if ($i == $current_page) {
+        $pagination .= " <span>$i</span>";
+    } else {
+        $pagination .= " <a href='catalog.php?";
+        if (!empty($search)) {
+            $pagination .= "s=".urlencode(htmlspecialchars($search))."&";
+        } else if (!empty($section)) {
+            $pagination .= "cat=".$section."&";
+        }
+        $pagination .= "pg=$i'>$i</a>";
+    }
+}
+$pagination .= "</div>";
 include("inc/header.php"); ?>
 
 <div class="section catalog page">
@@ -94,26 +114,8 @@ include("inc/header.php"); ?>
             }
             echo $pageTitle; ?>
         </h1>
-        
-        <!-- Create a for loop that is less than the total number of pages -->
-        <div class="pagination">
-        Pages:  
-            <?php
-                //Loop starts at page 1
-                //If $i is <= $total_pages continue loop
-                for($i = 1; $i <= $total_pages; $i++){
-                    if($i == $current_page){
-                        echo " <span> $i </span>";
-                    }else{
-                    echo " <a href='catalog.php?";
-                            if(!empty($section)) {
-                                echo "cat=" .$section. "&";
-                            }
-                            echo "pg=$i'>$i</a>";
-                    }
-                }
-            ?>
-        </div> 
+        <!-- Create pagination links above UL -->
+        <?php echo $pagination ?>
         <ul class="items">
             <?php
             //For each dynamically generates html for catalog and categories
@@ -122,7 +124,8 @@ include("inc/header.php"); ?>
             }
             ?>
         </ul>
-        
+        <!-- Create pagination links above UL -->
+        <?php echo $pagination; ?>
     </div>
 </div>
 
