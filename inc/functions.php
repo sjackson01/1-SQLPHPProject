@@ -1,38 +1,90 @@
 <?php
-function full_catalog_array(){
+//Use defualt parameter ($category = null)
+//Allows passing a category as a argument to count the array
+//Passing no argument to count the full catalog
+function get_catalog_count($category = null){
+        $category = strtolower($category);
+        include("connections.php");
+        try{
+            //Count all the items in the database
+                $sql = "SELECT COUNT(media_id) FROM Media";
+                if(!empty($category)){
+                //Add results to a PDO statement object
+                $result = $db->prepare($sql 
+                . " WHERE LOWER(category) = ?"
+            );
+                $result->bindParam(1,$category, PDO::PARAM_STR);
+                }else{
+                $result = $db->prepare($sql);
+            }
+             //Execute outside of if statement so that it always runs
+             $result->execute();
+        }catch(exception $e){
+            echo "bad query";
+        }
+        //Assign a single column to a count method with method Column
+        // 0 indicates the first column 
+        $count = $result->fetchColumn(0);
+        //Return the count
+        return $count;
+}
+
+//Set default parameters for $limit and null
+//This allows passing a limit without an offset 
+//Starting at the very first item by default
+function full_catalog_array($limit = null, $offset = 0 ){
     include("connections.php");
     try {
-        //Specify a title and category query from media
-           $results = $db->query("
-           SELECT media_id, title, category, img 
+        //Add query to SQL variable
+        $sql = 
+          "SELECT media_id, title, category, img 
            FROM Media
            ORDER BY
            REPLACE(
                REPLACE(
-                 REPLACE(title, 'The ', ''),
+                 REPLACE(title,'The ',''),
                     'An ', 
                     ''
                     ),
                  'A ',
                  ''
-                 )"
-            );
+                 )";
+        //Use conditional to add limit
+        if (is_integer($limit)){     
+            //Prepare the SQL query 
+            //Add limit with placeholders   
+            //Limit = how many items we want to return
+            //Offset = where we want to start
+            $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
+            //Bind param and filter for integer
+            $results-> bindParam(1, $limit, PDO::PARAM_INT);
+            $results-> bindParam(2, $offset, PDO::PARAM_INT);
+        } else {
+            //Prepare the SQL query    
+            $results = $db->prepare($sql);
+        }
+            //Execute the SQL query
+            $results->execute();
         } catch (Exception $e) {
             echo "Unable to retrieve results";
             exit;
         }
         
         //Store results statement object array in $catalog array
-        $catalog = $results->fetchALL();
+        $catalog = $results->fetchALL(PDO::FETCH_ASSOC);
         return $catalog;
 }
-//Takes category as argument
-function category_catalog_array($category){
+
+//Set default parameters for $limit and null
+//This allows passing a limit without an offset 
+//Starting at the very first item by default
+function category_catalog_array($category, $limit = null, $offset = 0){
     include("connections.php");
     //Insure that category passed and matched is lowercase
     $category = strtolower($category);
     try {
-           $results = $db->prepare(
+        //Add SQL statement to $sql
+        $sql =  
           "SELECT media_id, title, category, img 
            FROM Media 
            WHERE LOWER(category) = ?
@@ -46,10 +98,18 @@ function category_catalog_array($category){
                     ),
                  'A ',
                  ''
-                 )"
-        );
-        //Bind and specify the data type
-        $results->bindParam(1,$category,PDO::PARAM_STR);
+                 )";
+       if(is_integer($limit)){          
+            //Pass $sql and concatinate limit and offset then prepare        
+            $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
+            //Bind and specify the data type
+            $results->bindParam(1,$category,PDO::PARAM_STR);
+            $results->bindParam(2,$limit,PDO::PARAM_INT);
+            $results->bindParam(3,$offset,PDO::PARAM_INT);
+       }else{
+            $results = $db->prepare($sql);
+            $results->bindParam(1,$category,PDO::PARAM_STR);
+        }
         $results->execute();
         } catch (Exception $e) {
             echo "Unable to retrieve results";
@@ -57,8 +117,8 @@ function category_catalog_array($category){
         }
         
         //Store results statement object array in $catalog array
-        $item = $results->fetchALL();
-        return $item;
+        $catalog = $results->fetchALL();
+        return $catalog;
 }
 
 function random_catalog_array(){
@@ -140,6 +200,34 @@ function single_item_array($id){
         return $item;
 }
 
+function genre_array($category = null) {
+    $category = strtolower($category);
+    include("connections.php");
+  
+    try {
+      $sql = "SELECT genre, category"
+        . " FROM Genres "
+        . " JOIN Genre_Categories "
+        . " ON Genres.genre_id = Genre_Categories.genre_id ";
+      if (!empty($category)) {
+        $results = $db->prepare($sql 
+            . " WHERE LOWER(category) = ?"
+            . " ORDER BY genre");
+        $results->bindParam(1,$category,PDO::PARAM_STR);
+      } else {
+        $results = $db->prepare($sql . " ORDER BY genre");
+      }
+      $results->execute();
+    } catch (Exception $e) {
+      echo "bad query";
+    }
+    $genres = array();
+    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+        $genres[$row["category"]][] = $row["genre"];
+    }
+    return $genres;
+  }
+
 function get_item_html($item) {
     $output = "<li><a href='details.php?id="
         /* Instead of $id we use the $item["media_id"]*/
@@ -167,3 +255,4 @@ function array_category($catalog,$category) {
     asort($output);
     return array_keys($output);
 }
+
