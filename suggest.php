@@ -167,7 +167,7 @@ include("inc/header.php");
                     <label for="genre">Genre</label>
                 </th>
                 <td>
-                <!-- Generate HTML with function and foreach->
+                <!-- Generate HTML with function and foreach-->
                 <select name="genre" id="genre">
                     <option value="">Select One</option>
                         <?php
