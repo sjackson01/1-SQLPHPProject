@@ -1,7 +1,47 @@
 <?php
-//Use defualt parameter ($category = null)
-//Allows passing a category as a argument to count the array
-//Passing no argument to count the full catalog
+
+/**
+* Returns random array of 4 items. 
+* @return array $item from database.db 
+*/
+function random_catalog_array(){
+    include("connections.php");
+    try {
+           $results = $db->query(
+               "SELECT media_id, title, category, img 
+                FROM Media
+                ORDER BY RANDOM()
+                LIMIT 4"
+               );
+        } catch (Exception $e) {
+            echo "Unable to retrieve results";
+            exit;
+        }
+        
+        //Store results statement object array in $catalog array
+        $item = $results->fetchALL();
+        return $item;
+}
+
+/**
+ * Used in foreach loops on index.php and catalog.php to generate html.  
+* @param array $item from databbase.db
+*/
+function get_item_html($item) {
+    $output = "<li><a href='details.php?id="
+        /* Instead of $id we use the $item["media_id"]*/
+        . $item["media_id"] . "'><img src='" 
+        . $item["img"] . "' alt='" 
+        . $item["title"] . "' />" 
+        . "<p>View Details</p>"
+        . "</a></li>";
+    return $output;
+}
+
+/**
+ * Counts items by $section array passed through $_GET.
+ * @param array $category = $section from query string in main nav
+ */
 function get_catalog_count($category = null){
         $category = strtolower($category);
         include("connections.php");
@@ -29,9 +69,11 @@ function get_catalog_count($category = null){
         return $count;
 }
 
-//Set default parameters for $limit and null
-//This allows passing a limit without an offset 
-//Starting at the very first item by default
+/**
+* Pulls full catalog array from database.db with offset. 
+* @param int $limit=$items_per_page how many items to display per page 
+* @param int $offset how many items to skip to display current page
+*/
 function full_catalog_array($limit = null, $offset = 0 ){
     include("connections.php");
     try {
@@ -75,9 +117,12 @@ function full_catalog_array($limit = null, $offset = 0 ){
         return $catalog;
 }
 
-//Set default parameters for $limit and null
-//This allows passing a limit without an offset 
-//Starting at the very first item by default
+/**
+* Pulls full category catalog array from database.db with offset. 
+* @param array $cateogry = $section array from query string
+* @param int $limit=$items_per_page how many items to display per page 
+* @param int $offset how many items to skip to display current page
+*/
 function category_catalog_array($category, $limit = null, $offset = 0){
     include("connections.php");
     //Insure that category passed and matched is lowercase
@@ -121,26 +166,10 @@ function category_catalog_array($category, $limit = null, $offset = 0){
         return $catalog;
 }
 
-function random_catalog_array(){
-    include("connections.php");
-    try {
-           $results = $db->query(
-               "SELECT media_id, title, category, img 
-                FROM Media
-                ORDER BY RANDOM()
-                LIMIT 4"
-               );
-        } catch (Exception $e) {
-            echo "Unable to retrieve results";
-            exit;
-        }
-        
-        //Store results statement object array in $catalog array
-        $item = $results->fetchALL();
-        return $item;
-}
-
-//Pass $id argument to select media id and attributes
+/**
+* Pulls full details array from database.db with offset.  
+* @param int $id from query string passed from catalog.php/get_item_html() 
+*/
 function single_item_array($id){
     include("connections.php");
     try {
@@ -199,7 +228,10 @@ function single_item_array($id){
         //Change $catalog to item since we are only returning one item
         return $item;
 }
-
+/**
+* Pulls genre and category for dropdown men in suggest.php. 
+* @param array $category not used 
+*/
 function genre_array($category = null) {
     $category = strtolower($category);
     include("connections.php");
@@ -228,17 +260,11 @@ function genre_array($category = null) {
     return $genres;
   }
 
-function get_item_html($item) {
-    $output = "<li><a href='details.php?id="
-        /* Instead of $id we use the $item["media_id"]*/
-        . $item["media_id"] . "'><img src='" 
-        . $item["img"] . "' alt='" 
-        . $item["title"] . "' />" 
-        . "<p>View Details</p>"
-        . "</a></li>";
-    return $output;
-}
-
+/**
+* Not in use  
+* @param array $catalog 
+* @param array $category 
+*/
 function array_category($catalog,$category) {
     $output = array();
     
