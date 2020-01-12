@@ -42,11 +42,6 @@ if(!empty($section)){
     $limit_results = "cat=" . $section . "&";
 }
 
-$limit_results = "";
-if (!empty($section)) {
-  $limit_results = "cat=" . $section . "&";
-}
-
 //Rediret too-large page numbers to the last page
 if($current_page > $total_pages){
     header("location:catalog.php?"
@@ -87,14 +82,11 @@ $pagination .= "Pages: ";
 //If $i is <= $total_pages continue loop
 for ($i = 1;$i <= $total_pages;$i++) {
     if ($i == $current_page) {
+        //Display text number not link
         $pagination .= " <span>$i</span>";
     } else {
+        //Display number link
         $pagination .= " <a href='catalog.php?";
-        if (!empty($search)) {
-            $pagination .= "s=".urlencode(htmlspecialchars($search))."&";
-        } else if (!empty($section)) {
-            $pagination .= "cat=".$section."&";
-        }
         $pagination .= "pg=$i'>$i</a>";
     }
 }
